@@ -7,7 +7,7 @@ api.post("/doc", async (req, res) => {
   try {
     const { html, name } = req.body;
     if (!html || !name) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "Please send name and html in json body",
       });
     }
@@ -18,7 +18,6 @@ api.post("/doc", async (req, res) => {
     const db = await (await database.getDb()).collection;
 
     await db.insertOne(doc);
-
     res.send({
       message: "Document has been saved successfully",
     });
