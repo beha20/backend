@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const docs = require("./src/routes/docs");
+const auth = require("./src/routes/auth");
 const PORT = process.env.PORT || 5000;
 
 const initServer = () => {
@@ -9,11 +10,12 @@ const initServer = () => {
   app.use(cors());
   app.use(express.json());
   app.use(morgan("dev"));
+  app.use(auth);
   app.use(docs);
   return app
 }
 
-const app = initServer()
+const app = initServer();
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");
