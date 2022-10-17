@@ -19,11 +19,11 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '18.8.0'
+          node-version: '16.x'
 
       - name: npm install, build, and test
         run: |
-          npm install
+          yarn install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
