@@ -81,7 +81,7 @@ api.get("/login", async (req, res) => {
     }
 
     var token = jwt.sign({ id: result._id }, secret, {
-      expiresIn: '5m' // 86400 for 24 hours
+      expiresIn: '30m' // 86400 for 24 hours
     });
 
     return res.status(200).send({
@@ -96,5 +96,20 @@ api.get("/login", async (req, res) => {
     });
   }
 });
+
+api.get("/", async (req, res) => {
+    try {
+      const db = await database.getDb();
+      const resultSet = await db.collection.find({}).toArray();
+
+      return res.send(resultSet);
+    } catch (err) {
+      console.log("err", err);
+      return res.status(500).send({
+        message: "server error",
+      });
+    }
+  }
+);
 
 module.exports = api;
