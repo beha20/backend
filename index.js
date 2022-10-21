@@ -12,6 +12,8 @@ const RootQueryType = require("./src/graphql/root.js");
 
 const docs = require("./src/routes/docs");
 const auth = require("./src/routes/auth");
+const comments = require("./src/routes/comments");
+
 const PORT = process.env.PORT || 5000;
 
 const initServer = () => {
@@ -27,6 +29,7 @@ const initServer = () => {
   app.use(morgan("dev"));
   app.use(auth);
   app.use(docs);
+  app.use(comments);
 
   const schema = new GraphQLSchema({
     query: RootQueryType

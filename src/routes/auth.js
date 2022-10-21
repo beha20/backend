@@ -51,7 +51,7 @@ api.post("/signup", async (req, res) => {
   }
 });
 
-api.get("/login", async (req, res) => {
+api.get("/signin", async (req, res) => {
   try {
     const { email, password } = req.query;
     if (!email || !password)  {

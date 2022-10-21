@@ -33,13 +33,14 @@ const RootQueryType = new GraphQLObjectType({
       type: DocType,
       description: 'A single doc',
       args: {
-        name: { type: GraphQLString }
+        name: { type: GraphQLString },
+        author: { type: GraphQLString }
       },
       resolve: async function(parent, args) {
         const db = await docDB.getDb();
         const result = await db.collection.find({}).toArray();
-          
-        return result.find(doc => doc.name === args.name);
+
+        return result.filter(doc => doc.name === args.name && doc.author === args.author);
       }
     },
     users: {
@@ -55,10 +56,29 @@ const RootQueryType = new GraphQLObjectType({
     docs: {
       type: new GraphQLList(DocType),
       description: 'List of docs',
+      args: {
+        _id: { type: GraphQLString },
+        type: { type: GraphQLString },
+        name: { type: GraphQLString },
+        html: { type: GraphQLString },
+        author: { type: GraphQLString }
+      },
       resolve: async function(parent, args, ctx) {
         // console.log(ctx.headers['x-access-token']);
         const db = await docDB.getDb();
         const result = await db.collection.find({}).toArray();
+
+        if (args.name && args.author) {
+          return result.filter(doc => doc.name.includes(args.name) && doc.author === args.author);
+        }
+
+        if (args.name) {          
+          return result.filter(doc => doc.name.includes(args.name));
+        }
+
+        if (args.author) {
+          return result.filter(doc => doc.author === args.author);
+        }
 
         return result;
       }
